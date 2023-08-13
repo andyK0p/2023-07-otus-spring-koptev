@@ -13,11 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 class QuizServiceImplTest {
-    private QuestionRepository repo;
-    private QuizService quizService;
+    private final QuestionRepository repo;
+    private final QuizService quizService;
 
-    @BeforeEach
-    void init() {
+    public QuizServiceImplTest() {
         repo = Mockito.mock(SimpleCSVQuestionRepositoryImpl.class);
         quizService = new QuizServiceImpl(repo);
     }
