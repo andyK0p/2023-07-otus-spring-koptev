@@ -87,7 +87,6 @@ class SimpleCSVQuestionRepositoryImplTest {
         repo.importQuestions(expectedList);
 
         List<Question> actualList = repo.getQuestions();
-
         assertEquals(expectedList, actualList);
     }
 }

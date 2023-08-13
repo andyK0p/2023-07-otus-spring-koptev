@@ -1,6 +1,5 @@
 package ru.otus.spring.simplequiz.service.impl;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import ru.otus.spring.simplequiz.dao.QuestionRepository;
@@ -27,7 +26,7 @@ class QuizServiceImplTest {
         Mockito.verify(repo).loadQuestions();
     }
 
-    @Test()
+    @Test
     void printQuestions() {
         List<Answer> answerList = new ArrayList<>(1);
         List<Question> questionList = new ArrayList<>(1);
