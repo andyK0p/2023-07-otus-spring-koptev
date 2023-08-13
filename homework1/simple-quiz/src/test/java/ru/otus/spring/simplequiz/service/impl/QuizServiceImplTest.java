@@ -44,6 +44,5 @@ class QuizServiceImplTest {
         Mockito.when(repo.getQuestions()).thenReturn(questionList);
         quizService.printQuestions();
         Mockito.verify(repo).getQuestions();
-
     }
 }
