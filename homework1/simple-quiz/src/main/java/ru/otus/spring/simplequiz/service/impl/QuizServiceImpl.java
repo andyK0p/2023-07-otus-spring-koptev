@@ -3,8 +3,8 @@ package ru.otus.spring.simplequiz.service.impl;
 import ru.otus.spring.simplequiz.dao.QuestionRepository;
 import ru.otus.spring.simplequiz.service.QuizService;
 
-
 public class QuizServiceImpl implements QuizService {
+
     private final QuestionRepository questionRepository;
 
     public QuizServiceImpl(QuestionRepository questionRepository) {

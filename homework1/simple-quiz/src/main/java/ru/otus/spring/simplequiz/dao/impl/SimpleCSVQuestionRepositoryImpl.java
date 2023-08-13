@@ -4,7 +4,6 @@ import org.springframework.core.io.ClassPathResource;
 import ru.otus.spring.simplequiz.dao.QuestionRepository;
 import ru.otus.spring.simplequiz.domain.Answer;
 import ru.otus.spring.simplequiz.domain.Question;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -29,31 +28,10 @@ public class SimpleCSVQuestionRepositoryImpl implements QuestionRepository {
         try (BufferedReader br = new BufferedReader(
                 new InputStreamReader(new ClassPathResource(fileName).getInputStream()))) {
             String line;
-            Scanner scanner;
-            int index = 0;
             while ((line = br.readLine()) != null) {
-                Question question = new Question();
-                List<Answer> answerList = new ArrayList<>();
-                scanner = new Scanner(line).useDelimiter(";");
-                while (scanner.hasNext()) {
-                    String data = scanner.next();
-                    Answer answer = null;
-                    switch (index) {
-                        case 0 -> question.setId(Integer.parseInt(data));
-                        case 1 -> question.setText(data);
-                        case 2, 3, 4 -> answer = new Answer(index - 1, question.getId(), data);
-                        case 5 -> question.setCorrectAnswerId(Integer.parseInt(data));
-                        default -> System.out.println("Unexpected data at index: " + index);
-                    }
-                    if (answer != null) {
-                        answerList.add(answer);
-                    }
-                    index++;
-                }
-                question.setAnswers(answerList);
-                questions.add(question);
-                index = 0;
+                readQuestion(line);
             }
+
         } catch (IOException ex) {
             System.out.println("Error while reading CSV file. Reason: " + ex.getMessage());
             ex.printStackTrace();
@@ -78,5 +56,29 @@ public class SimpleCSVQuestionRepositoryImpl implements QuestionRepository {
                 .stream()
                 .filter(q -> id == q.getId())
                 .findFirst();
+    }
+
+    private void readQuestion(String line) {
+        int index = 0;
+        Question question = new Question();
+        List<Answer> answerList = new ArrayList<>();
+        Scanner scanner = new Scanner(line).useDelimiter(";");
+        while (scanner.hasNext()) {
+            String data = scanner.next();
+            Answer answer = null;
+            switch (index) {
+                case 0 -> question.setId(Integer.parseInt(data));
+                case 1 -> question.setText(data);
+                case 2, 3, 4 -> answer = new Answer(index - 1, question.getId(), data);
+                case 5 -> question.setCorrectAnswerId(Integer.parseInt(data));
+                default -> System.out.println("Unexpected data at index: " + index);
+            }
+            if (answer != null) {
+                answerList.add(answer);
+            }
+            index++;
+        }
+        question.setAnswers(answerList);
+        questions.add(question);
     }
 }
