@@ -1,9 +1,5 @@
 package ru.otus.spring.simplequiz.service.impl;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -13,8 +9,6 @@ import ru.otus.spring.simplequiz.domain.Answer;
 import ru.otus.spring.simplequiz.domain.Question;
 import ru.otus.spring.simplequiz.service.QuizService;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 
