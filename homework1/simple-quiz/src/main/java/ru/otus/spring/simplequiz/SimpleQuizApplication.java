@@ -9,7 +9,7 @@ public class SimpleQuizApplication {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/context.xml");
 		QuizService quiz = context.getBean(QuizService.class);
 
-		quiz.printQuestions();
+		quiz.runQuiz();
 
 		context.close();
 	}
