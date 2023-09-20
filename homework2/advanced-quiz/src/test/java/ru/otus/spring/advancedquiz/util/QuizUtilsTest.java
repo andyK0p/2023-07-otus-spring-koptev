@@ -27,29 +27,29 @@ class QuizUtilsTest {
 
     @Test
     @DisplayName("успешно парсит пользовательский ввод")
-    void test_parseInput_successful() throws QuizException {
-        assertTrue(QuizUtils.parseInput("y"));
-        assertFalse(QuizUtils.parseInput("n"));
+    void test_parseYesNoInput_successful() throws QuizException {
+        assertTrue(QuizUtils.parseYesNoInput("y"));
+        assertFalse(QuizUtils.parseYesNoInput("n"));
     }
 
     @Test
     @DisplayName("падает, когда пользователь ввел неправильные символы")
-    void test_parseInput_whenIncorrectInput_thenFailed() {
+    void test_parseYesNoInput_whenIncorrectInput_thenFailed() {
         String message = "Incorrect input! Must be 'y' or 'n'.";
         String empty = "";
-        Exception exception = assertThrows(IncorrectInputException.class, () -> QuizUtils.parseInput(empty));
+        Exception exception = assertThrows(IncorrectInputException.class, () -> QuizUtils.parseYesNoInput(empty));
         assertEquals(message, exception.getMessage());
 
         String blank = " ";
-        exception = assertThrows(IncorrectInputException.class, () -> QuizUtils.parseInput(blank));
+        exception = assertThrows(IncorrectInputException.class, () -> QuizUtils.parseYesNoInput(blank));
         assertEquals(message, exception.getMessage());
 
         String moreThen1Char = "abracadabra";
-        exception = assertThrows(IncorrectInputException.class, () -> QuizUtils.parseInput(moreThen1Char));
+        exception = assertThrows(IncorrectInputException.class, () -> QuizUtils.parseYesNoInput(moreThen1Char));
         assertEquals(message, exception.getMessage());
 
         String wrongChar = "z";
-        exception = assertThrows(IncorrectInputException.class, () -> QuizUtils.parseInput(wrongChar));
+        exception = assertThrows(IncorrectInputException.class, () -> QuizUtils.parseYesNoInput(wrongChar));
         assertEquals(message, exception.getMessage());
     }
 }

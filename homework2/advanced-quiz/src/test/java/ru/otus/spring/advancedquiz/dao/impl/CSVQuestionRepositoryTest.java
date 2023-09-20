@@ -12,7 +12,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.otus.spring.advancedquiz.dao.QuestionRepository;
 import ru.otus.spring.advancedquiz.domain.Answer;
 import ru.otus.spring.advancedquiz.domain.Question;
-import ru.otus.spring.advancedquiz.util.impl.CSVQuestionReader;
+import ru.otus.spring.advancedquiz.service.impl.CSVQuestionReader;
+import ru.otus.spring.advancedquiz.service.impl.QuestionParserImpl;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {CSVQuestionReader.class, CSVQuestionRepository.class})
+@ContextConfiguration(classes = {CSVQuestionReader.class, CSVQuestionRepository.class, QuestionParserImpl.class})
 @TestPropertySource({"classpath:application-test.properties"})
 @DisplayName("Хранилище Question")
 class CSVQuestionRepositoryTest {

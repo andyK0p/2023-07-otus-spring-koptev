@@ -1,19 +1,20 @@
 package ru.otus.spring.advancedquiz.dao.impl;
 
 
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 import ru.otus.spring.advancedquiz.dao.QuestionRepository;
 import ru.otus.spring.advancedquiz.domain.Question;
-import ru.otus.spring.advancedquiz.util.QuestionReader;
+import ru.otus.spring.advancedquiz.service.QuestionReader;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+@Component
 public class CSVQuestionRepository implements QuestionRepository {
 
     private final QuestionReader questionReader;
+
     private final List<Question> questions;
 
     public CSVQuestionRepository(QuestionReader questionReader) {

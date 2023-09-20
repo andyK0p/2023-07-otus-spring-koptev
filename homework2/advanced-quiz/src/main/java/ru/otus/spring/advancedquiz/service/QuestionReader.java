@@ -1,4 +1,4 @@
-package ru.otus.spring.advancedquiz.util;
+package ru.otus.spring.advancedquiz.service;
 
 import ru.otus.spring.advancedquiz.domain.Question;
 

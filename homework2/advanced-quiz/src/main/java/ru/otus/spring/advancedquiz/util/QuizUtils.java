@@ -22,7 +22,7 @@ public class QuizUtils {
         return str.toString();
     }
 
-    public static boolean parseInput(String input) throws QuizException {
+    public static boolean parseYesNoInput(String input) throws QuizException {
         if (!input.isEmpty() && !input.isBlank() && input.length() == 1) {
             if (input.toLowerCase().charAt(0) == 'y') {
                 return true;

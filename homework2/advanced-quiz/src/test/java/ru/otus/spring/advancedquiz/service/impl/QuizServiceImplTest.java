@@ -125,42 +125,6 @@ class QuizServiceImplTest {
     }
 
     @Test
-    @DisplayName("Инициализация пользователя проходит успешно")
-    void test_initQuizUser_successful() throws QuizException {
-        String testFullName = "Firstname Lastname";
-        User expected = new User();
-        expected.setId(1);
-        expected.setFirstName("Firstname");
-        expected.setLastName("Lastname");
-
-        when(userRepo.createUser(any(User.class))).thenReturn(expected);
-
-        User actual = quizService.initQuizUser(testFullName);
-
-        assertEquals(expected, actual);
-        assertDoesNotThrow(() -> { quizService.initQuizUser(testFullName); });
-    }
-
-    @Test
-    @DisplayName("Инициализация пользователя падает, когда введено неправильное имя")
-    void test_initQuizUser_whenWrongUserNameInput_thenFailed() {
-        String empty = "";
-        Exception exception;
-        String expectedMessage = "Full name must not be empty or blank and must contain at least 1 space character!";
-        exception = assertThrows(QuizException.class, () -> quizService.initQuizUser(empty));
-
-        assertEquals(expectedMessage, exception.getMessage());
-
-        String blank = " ";
-        exception = assertThrows(QuizException.class, () -> quizService.initQuizUser(blank));
-        assertEquals(expectedMessage, exception.getMessage());
-
-        String noWhiteSpaces = "FirstnameLastname";
-        exception = assertThrows(QuizException.class, () -> quizService.initQuizUser(noWhiteSpaces));
-        assertEquals(expectedMessage, exception.getMessage());
-    }
-
-    @Test
     @DisplayName("отвечает на вопросы теста успешно")
     void test_doAnswerQuestions_successful() throws QuizException {
         Question question = expectedList.get(0);

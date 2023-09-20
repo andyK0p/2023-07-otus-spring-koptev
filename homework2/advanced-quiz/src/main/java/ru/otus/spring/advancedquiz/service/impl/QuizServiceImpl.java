@@ -15,7 +15,7 @@ import java.util.InputMismatchException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static ru.otus.spring.advancedquiz.util.QuizUtils.answersAsString;
-import static ru.otus.spring.advancedquiz.util.QuizUtils.parseInput;
+import static ru.otus.spring.advancedquiz.util.QuizUtils.parseYesNoInput;
 
 @Service
 public class QuizServiceImpl implements QuizService {
@@ -60,7 +60,7 @@ public class QuizServiceImpl implements QuizService {
         ioService.printFinishedMessage();
     }
 
-    public User initQuizUser(String fullName) throws QuizException {
+    private User initQuizUser(String fullName) throws QuizException {
         if (!fullName.isEmpty() && !fullName.isBlank() && fullName.contains(" ")) {
             String firstName = fullName.substring(0, fullName.indexOf(" "));
             String lastName = fullName.substring(fullName.indexOf(" ") + 1);
@@ -92,7 +92,7 @@ public class QuizServiceImpl implements QuizService {
 
     private void showCorrectAnswersIfNeeded() throws QuizException {
         ioService.askShowCorrectAnswers();
-        if (parseInput(ioService.readInput())) {
+        if (parseYesNoInput(ioService.readInput())) {
             ioService.printAllQuestionsWithAnswers(
                     questionRepository.getQuestions()
                             .stream()
@@ -104,7 +104,7 @@ public class QuizServiceImpl implements QuizService {
 
     private boolean repeatQuiz() throws QuizException {
         ioService.askRepeatQuiz();
-        return parseInput(ioService.readInput());
+        return parseYesNoInput(ioService.readInput());
     }
 
     private void evaluateAndShowResult(User user, int correctAnswers) throws QuizException {
