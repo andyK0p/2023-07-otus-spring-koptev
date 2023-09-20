@@ -1,0 +1,5 @@
+1;Which of those doesn’t have an index based structure?;List;Map;Set;3
+2;What is java.util.Collections?;Class;Interface;Object;1
+3;Methods such as reverse, shuffle are offered in?;Object;Array;Collections;3
+4;Which allows the storage of a null key and null values?;Hashtable;Hashmap;HashSet;2
+5;What guarantees type-safety in a collection?;Generics;Abstract classes;Interfaces;1
