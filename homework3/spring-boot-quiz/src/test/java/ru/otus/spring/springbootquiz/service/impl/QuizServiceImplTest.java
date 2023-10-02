@@ -41,6 +41,7 @@ class QuizServiceImplTest {
     private QuizIOService ioService;
     @Mock
     private QuizEvaluationService evaluationService;
+
     @Mock
     private LocalizationService localizationService;
     @InjectMocks
@@ -124,5 +125,28 @@ class QuizServiceImplTest {
 
         assertEquals(expected, actual);
         assertDoesNotThrow(() -> { quizService.doAnswerQuestions(); });
+    }
+
+    @Test
+    @DisplayName("падает, если вычисление результата вернуло null")
+    void test_runQuiz_WhenNullUser_thenFailed() {
+        User testUser = new User();
+        testUser.setId(1);
+        testUser.setFirstName("Test");
+        testUser.setLastName("Username");
+        String error = "Quiz interrupted with message: Result returned null because provided user is null!";
+
+        when(ioService.readUserName()).thenReturn("Test Username");
+        when(userRepo.createUser(any())).thenReturn(testUser);
+        when(questionRepo.getQuestions()).thenReturn(expectedList);
+        when(ioService.readAnswer()).thenReturn(CORRECT_ANSWER);
+        when(evaluationService.evaluateAnswerIsCorrect(anyInt(), any(Question.class))).thenReturn(true);
+        when(evaluationService.evaluateQuizResult(any(User.class), anyInt())).thenReturn(null);
+        when(localizationService.getMessage(anyString())).thenReturn("some message");
+        when(localizationService.getMessage(anyString(), anyString())).thenReturn(error);
+
+        quizService.runQuiz();
+
+        verify(ioService, times(1)).printQuizError(error);
     }
 }
