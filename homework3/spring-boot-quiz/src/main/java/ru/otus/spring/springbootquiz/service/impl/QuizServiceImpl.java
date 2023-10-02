@@ -95,14 +95,14 @@ public class QuizServiceImpl implements QuizService {
 
     private void showCorrectAnswersIfNeeded() throws QuizException {
         ioService.askShowCorrectAnswers();
-        if (parseYesNoInput(ioService.readInput())) {
+        if (parseYesNoInput(ioService.readInput(), localizationService.getMessage("incorrectInput"))) {
             ioService.printAllQuestionsWithAnswers(questionRepository.getQuestions());
         }
     }
 
     private boolean repeatQuiz() throws QuizException {
         ioService.askRepeatQuiz();
-        return parseYesNoInput(ioService.readInput());
+        return parseYesNoInput(ioService.readInput(), localizationService.getMessage("incorrectInput"));
     }
 
     private void evaluateAndShowResult(User user, int correctAnswers) throws QuizException {

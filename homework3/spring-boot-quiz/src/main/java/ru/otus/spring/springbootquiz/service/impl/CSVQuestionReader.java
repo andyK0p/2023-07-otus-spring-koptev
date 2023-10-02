@@ -2,7 +2,7 @@ package ru.otus.spring.springbootquiz.service.impl;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
-import ru.otus.spring.springbootquiz.config.AppConfig;
+import ru.otus.spring.springbootquiz.config.provider.QuestionStorageProvider;
 import ru.otus.spring.springbootquiz.domain.Question;
 import ru.otus.spring.springbootquiz.service.LocalizationService;
 import ru.otus.spring.springbootquiz.service.QuestionParser;
@@ -24,9 +24,9 @@ public class CSVQuestionReader implements QuestionReader {
 
     public CSVQuestionReader(QuestionParser parser,
                              LocalizationService localizationService,
-                             AppConfig appConfig) {
+                             QuestionStorageProvider questionStorageProvider) {
         this.parser = parser;
-        this.fileName = appConfig.getFilePath();
+        this.fileName = questionStorageProvider.getFilePath();
         this.localizationService = localizationService;
     }
 

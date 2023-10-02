@@ -2,7 +2,6 @@ package ru.otus.spring.springbootquiz.util;
 
 import lombok.experimental.UtilityClass;
 import ru.otus.spring.springbootquiz.domain.Answer;
-import ru.otus.spring.springbootquiz.exception.IncorrectInputException;
 import ru.otus.spring.springbootquiz.exception.QuizException;
 
 import java.util.List;
@@ -22,17 +21,17 @@ public class QuizUtils {
         return str.toString();
     }
 
-    public static boolean parseYesNoInput(String input) throws QuizException {
+    public static boolean parseYesNoInput(String input, String errorMessage) throws QuizException {
         if (!input.isEmpty() && !input.isBlank() && input.length() == 1) {
             if (input.toLowerCase().charAt(0) == 'y') {
                 return true;
             } else if (input.toLowerCase().charAt(0) == 'n') {
                 return false;
             } else {
-                throw new IncorrectInputException();
+                throw new QuizException(errorMessage);
             }
         } else {
-            throw new IncorrectInputException();
+            throw new QuizException(errorMessage);
         }
     }
 }

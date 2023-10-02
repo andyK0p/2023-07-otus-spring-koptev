@@ -3,7 +3,6 @@ package ru.otus.spring.springbootquiz.util;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import ru.otus.spring.springbootquiz.domain.Answer;
-import ru.otus.spring.springbootquiz.exception.IncorrectInputException;
 import ru.otus.spring.springbootquiz.exception.QuizException;
 
 import java.util.Arrays;
@@ -13,6 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Класс утилит")
 class QuizUtilsTest {
+
+    private static final String ERROR_MSG = "Incorrect input! Must be 'y' or 'n'.";
 
     @Test
     @DisplayName("приводит список ответов к форматированной строке")
@@ -28,28 +29,27 @@ class QuizUtilsTest {
     @Test
     @DisplayName("успешно парсит пользовательский ввод")
     void test_parseYesNoInput_successful() throws QuizException {
-        assertTrue(QuizUtils.parseYesNoInput("y"));
-        assertFalse(QuizUtils.parseYesNoInput("n"));
+        assertTrue(QuizUtils.parseYesNoInput("y", ERROR_MSG));
+        assertFalse(QuizUtils.parseYesNoInput("n", ERROR_MSG));
     }
 
     @Test
     @DisplayName("падает, когда пользователь ввел неправильные символы")
     void test_parseYesNoInput_whenIncorrectInput_thenFailed() {
-        String message = "Incorrect input! Must be 'y' or 'n'.";
         String empty = "";
-        Exception exception = assertThrows(IncorrectInputException.class, () -> QuizUtils.parseYesNoInput(empty));
-        assertEquals(message, exception.getMessage());
+        Exception exception = assertThrows(QuizException.class, () -> QuizUtils.parseYesNoInput(empty, ERROR_MSG));
+        assertEquals(ERROR_MSG, exception.getMessage());
 
         String blank = " ";
-        exception = assertThrows(IncorrectInputException.class, () -> QuizUtils.parseYesNoInput(blank));
-        assertEquals(message, exception.getMessage());
+        exception = assertThrows(QuizException.class, () -> QuizUtils.parseYesNoInput(blank, ERROR_MSG));
+        assertEquals(ERROR_MSG, exception.getMessage());
 
         String moreThen1Char = "abracadabra";
-        exception = assertThrows(IncorrectInputException.class, () -> QuizUtils.parseYesNoInput(moreThen1Char));
-        assertEquals(message, exception.getMessage());
+        exception = assertThrows(QuizException.class, () -> QuizUtils.parseYesNoInput(moreThen1Char, ERROR_MSG));
+        assertEquals(ERROR_MSG, exception.getMessage());
 
         String wrongChar = "z";
-        exception = assertThrows(IncorrectInputException.class, () -> QuizUtils.parseYesNoInput(wrongChar));
-        assertEquals(message, exception.getMessage());
+        exception = assertThrows(QuizException.class, () -> QuizUtils.parseYesNoInput(wrongChar, ERROR_MSG));
+        assertEquals(ERROR_MSG, exception.getMessage());
     }
 }

@@ -8,7 +8,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import ru.otus.spring.springbootquiz.config.AppConfig;
+import ru.otus.spring.springbootquiz.config.provider.QuestionStorageProvider;
 import ru.otus.spring.springbootquiz.config.QuizProperties;
 import ru.otus.spring.springbootquiz.domain.Question;
 import ru.otus.spring.springbootquiz.service.QuestionReader;
@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @EnableConfigurationProperties(value = {QuizProperties.class})
-@ContextConfiguration(classes = {CSVQuestionReader.class, QuestionParserImpl.class, LocalizationServiceImpl.class, AppConfig.class})
+@ContextConfiguration(classes = {CSVQuestionReader.class, QuestionParserImpl.class, LocalizationServiceImpl.class, QuestionStorageProvider.class})
 @TestPropertySource({"classpath:application.properties"})
 @DisplayName("Загрузчик вопросов из файла")
 class CSVQuestionReaderTest {
