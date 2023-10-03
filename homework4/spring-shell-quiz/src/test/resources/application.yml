@@ -1,0 +1,11 @@
+spring:
+  shell:
+    interactive:
+      enabled: false
+
+app:
+  quiz:
+    minimum-correct-amount: 4
+    locale: en-US
+    repo-path:
+      en_US: questions/test_en.csv
