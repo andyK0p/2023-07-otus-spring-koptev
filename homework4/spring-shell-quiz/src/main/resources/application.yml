@@ -1,0 +1,15 @@
+spring:
+  messages:
+    basename: messages
+    fallback-to-system-locale: false
+
+
+app:
+  quiz:
+    minimum-correct-amount: 4
+    repo-path:
+      en_US: questions/questions_en.csv
+      ru_RU: questions/questions_ru.csv
+    locale: en-US #ru-RU
+
+
