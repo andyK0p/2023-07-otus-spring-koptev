@@ -8,7 +8,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.context.annotation.Import;
 import ru.otus.spring.jpalibrary.dao.entity.Author;
 import ru.otus.spring.jpalibrary.dao.entity.Book;
-import ru.otus.spring.jpalibrary.dao.entity.Comment;
 import ru.otus.spring.jpalibrary.dao.entity.Genre;
 
 import java.util.List;
@@ -28,10 +27,6 @@ class BookRepositoryImplTest {
     private static final String AUTHOR_NAME = "Pamela L. Travers";
 
     private static final String GENRE_NAME = "Kids fairytale";
-
-    private static final String COMMENT_NAME = "Ellie";
-
-    private static final String COMMENT_TEXT = "I like it very much!";
 
     private static final int PAGE_COUNT = 385;
 

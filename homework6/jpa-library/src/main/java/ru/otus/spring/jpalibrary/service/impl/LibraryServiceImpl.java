@@ -2,13 +2,17 @@ package ru.otus.spring.jpalibrary.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.jpalibrary.dao.entity.Author;
 import ru.otus.spring.jpalibrary.dao.entity.Book;
 import ru.otus.spring.jpalibrary.dao.entity.Comment;
 import ru.otus.spring.jpalibrary.dao.entity.Genre;
+import ru.otus.spring.jpalibrary.dao.repository.BookRepository;
 import ru.otus.spring.jpalibrary.dto.BookDto;
+import ru.otus.spring.jpalibrary.dto.BookOutputDto;
 import ru.otus.spring.jpalibrary.dto.CommentDto;
 import ru.otus.spring.jpalibrary.dto.CommentOutputDto;
+import ru.otus.spring.jpalibrary.exception.NotFoundException;
 import ru.otus.spring.jpalibrary.service.AuthorService;
 import ru.otus.spring.jpalibrary.service.BookService;
 import ru.otus.spring.jpalibrary.service.GenreService;
@@ -17,6 +21,7 @@ import ru.otus.spring.jpalibrary.service.CommentService;
 
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +35,8 @@ public class LibraryServiceImpl implements LibraryService {
 
     private final CommentService commentService;
 
+    private final BookRepository bookRepository;
+
     @Override
     public List<Author> listAllAuthors() {
         return authorService.getAllAuthors();
@@ -41,12 +48,12 @@ public class LibraryServiceImpl implements LibraryService {
     }
 
     @Override
-    public List<Book> listAllBooks() {
+    public List<BookOutputDto> listAllBooks() {
         return bookService.getAllBooks();
     }
 
     @Override
-    public Book getBookById(Long bookId) {
+    public BookOutputDto getBookById(Long bookId) {
         return bookService.getBookById(bookId);
     }
 
@@ -62,9 +69,15 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public void updateBook(BookDto bookDto) {
-        Author author = authorService.getAuthorById(bookDto.getAuthorId());
-        Genre genre = genreService.getGenreById(bookDto.getGenreId());
-        Book book = new Book(bookDto.getId(), bookDto.getTitle(), bookDto.getPageCount(), author, genre);
+        Book book = bookRepository.findById(bookDto.getId()).orElseThrow(NotFoundException::new);
+        if (!bookDto.getTitle().isEmpty()) {
+            book.setTitle(bookDto.getTitle());
+        }
+        if (Objects.nonNull(bookDto.getPageCount()) && bookDto.getPageCount() != 0) {
+            book.setPageCount(bookDto.getPageCount());
+        }
+        book.setAuthor(authorService.getAuthorById(bookDto.getAuthorId()));
+        book.setGenre(genreService.getGenreById(bookDto.getGenreId()));
         bookService.updateBook(book);
     }
 
@@ -75,12 +88,12 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public List<CommentOutputDto> listAllCommentsForBook(Long bookId) {
-        return commentService.getAllCommentsByBookId(bookId);
+        return bookService.getAllCommentsByBook(bookId);
     }
 
     @Override
     public CommentOutputDto getCommentById(Long commentId) {
-        return commentService.getCommentById(commentId);
+        return CommentOutputDto.fromDomain(commentService.getById(commentId));
     }
 
     @Override
@@ -88,31 +101,21 @@ public class LibraryServiceImpl implements LibraryService {
         Comment comment = new Comment();
         comment.setName(commentDto.getName());
         comment.setText(commentDto.getText());
-        Book book = bookService.getBookById(commentDto.getBookId());
-        comment.setBook(book);
-        commentService.addComment(comment);
+        bookService.addComment(commentDto.getBookId(), comment);
     }
 
     @Override
+    @Transactional
     public void updateComment(CommentDto commentDto) {
-        Comment comment = commentService.getById(commentDto.getId());
-        if (commentDto.getName() != null) {
-            comment.setName(commentDto.getName());
-        }
-        if (commentDto.getText() != null) {
-            comment.setText(commentDto.getText());
-        }
-        if (commentDto.getBookId() != null) {
-            Book book = bookService.getBookById(commentDto.getBookId());
-            if (book != null) {
-                comment.setBook(book);
-            }
-        }
-        commentService.updateComment(comment);
+        Comment oldComment = commentService.getById(commentDto.getId());
+        Comment newComment = new Comment(oldComment.getId(), commentDto.getName(), commentDto.getText(), null);
+        bookService.updateComment(commentDto.getBookId(), oldComment, newComment);
     }
 
     @Override
-    public void deleteComment(Long commentId) {
-        commentService.deleteCommentById(commentId);
+    @Transactional
+    public void deleteComment(CommentDto dto) {
+        Comment comment = commentService.getById(dto.getId());
+        bookService.removeComment(dto.getBookId(), comment);
     }
 }

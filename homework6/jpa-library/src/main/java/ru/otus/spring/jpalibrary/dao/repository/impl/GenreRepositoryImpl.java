@@ -3,6 +3,7 @@ package ru.otus.spring.jpalibrary.dao.repository.impl;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import ru.otus.spring.jpalibrary.dao.entity.Genre;
 import ru.otus.spring.jpalibrary.dao.repository.GenreRepository;
@@ -10,7 +11,7 @@ import ru.otus.spring.jpalibrary.dao.repository.GenreRepository;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
+@Component
 @RequiredArgsConstructor
 public class GenreRepositoryImpl implements GenreRepository {
 

@@ -1,6 +1,5 @@
 package ru.otus.spring.jpalibrary.dao.entity;
 
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.NamedAttributeNode;
 import jakarta.persistence.NamedEntityGraph;
@@ -10,17 +9,22 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.CascadeType;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @NamedEntityGraph(name = "books-entity-graph",
-        attributeNodes = {@NamedAttributeNode("author"), @NamedAttributeNode("genre")})
+        attributeNodes = {@NamedAttributeNode("author"), @NamedAttributeNode("genre"), @NamedAttributeNode("comments")})
 @Entity
 @Table(name = "books")
 public class Book {
@@ -35,15 +39,32 @@ public class Book {
     @Column(name = "page_count")
     private Integer pageCount;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author_id", referencedColumnName = "id")
     private Author author;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "genre_id", referencedColumnName = "id")
     private Genre genre;
 
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-//    @JoinColumn(name = "book_id")
-//    private List<Comment> comments;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book", orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
+
+    public Book(Long id, String title, Integer pageCount, Author author, Genre genre) {
+        this.id = id;
+        this.title = title;
+        this.pageCount = pageCount;
+        this.author = author;
+        this.genre = genre;
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+        comment.setBook(this);
+    }
+
+    public void removeComment(Comment comment) {
+        this.comments.remove(comment);
+        comment.setBook(null);
+    }
 }

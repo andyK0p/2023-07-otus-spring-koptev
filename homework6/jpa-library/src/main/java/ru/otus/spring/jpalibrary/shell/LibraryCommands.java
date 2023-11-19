@@ -74,7 +74,7 @@ public class LibraryCommands {
         return "The book with id=" + bookId + " has been updated.";
     }
 
-    //example: db 3
+    //example: db 2
     @ShellMethod(value = "Delete book by id", key = {"db", "delete-book"})
     public String deleteBook(@ShellOption String bookId) {
         libraryService.deleteBook(Long.parseLong(bookId));
@@ -115,10 +115,14 @@ public class LibraryCommands {
         System.out.println(libraryService.getCommentById(Long.parseLong(commentId)));
     }
 
-    //example: dc 1
+    //example: dc 1 3
     @ShellMethod(value = "Delete comment by id", key = {"dc", "delete-comment"})
-    public String deleteComment(@ShellOption String commentId) {
-        libraryService.deleteComment(Long.parseLong(commentId));
+    public String deleteComment(@ShellOption String commentId,
+                                @ShellOption String bookId) {
+        CommentDto dto = new CommentDto();
+        dto.setId(Long.parseLong(commentId));
+        dto.setBookId(Long.parseLong(bookId));
+        libraryService.deleteComment(dto);
         return "The comment with id=" + commentId + " has been deleted.";
     }
 }

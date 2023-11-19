@@ -2,9 +2,9 @@ package ru.otus.spring.jpalibrary.service;
 
 
 import ru.otus.spring.jpalibrary.dao.entity.Author;
-import ru.otus.spring.jpalibrary.dao.entity.Book;
 import ru.otus.spring.jpalibrary.dao.entity.Genre;
 import ru.otus.spring.jpalibrary.dto.BookDto;
+import ru.otus.spring.jpalibrary.dto.BookOutputDto;
 import ru.otus.spring.jpalibrary.dto.CommentDto;
 import ru.otus.spring.jpalibrary.dto.CommentOutputDto;
 
@@ -16,9 +16,9 @@ public interface LibraryService {
 
     List<Genre> listAllGenres();
 
-    List<Book> listAllBooks();
+    List<BookOutputDto> listAllBooks();
 
-    Book getBookById(Long bookId);
+    BookOutputDto getBookById(Long bookId);
 
     void addBookToLibrary(BookDto bookDto);
 
@@ -34,5 +34,5 @@ public interface LibraryService {
 
     void updateComment(CommentDto commentDto);
 
-    void deleteComment(Long commentId);
+    void deleteComment(CommentDto commentDto);
 }
