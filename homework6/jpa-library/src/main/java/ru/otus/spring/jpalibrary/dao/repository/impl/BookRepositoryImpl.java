@@ -6,7 +6,6 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 import ru.otus.spring.jpalibrary.dao.entity.Book;
 import ru.otus.spring.jpalibrary.dao.repository.BookRepository;
 
