@@ -16,6 +16,8 @@ import jakarta.persistence.CascadeType;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +26,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @NamedEntityGraph(name = "books-entity-graph",
-        attributeNodes = {@NamedAttributeNode("author"), @NamedAttributeNode("genre"), @NamedAttributeNode("comments")})
+        attributeNodes = {@NamedAttributeNode("author"), @NamedAttributeNode("genre")})
 @Entity
 @Table(name = "books")
 public class Book {
@@ -47,6 +49,7 @@ public class Book {
     @JoinColumn(name = "genre_id", referencedColumnName = "id")
     private Genre genre;
 
+    @Fetch(FetchMode.SUBSELECT)
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book", orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 

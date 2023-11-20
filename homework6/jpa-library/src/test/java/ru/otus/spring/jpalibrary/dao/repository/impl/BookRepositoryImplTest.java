@@ -46,7 +46,8 @@ class BookRepositoryImplTest {
                 .allMatch(b -> !b.getTitle().equals(""))
                 .allMatch(b -> b.getPageCount() > 0)
                 .allMatch(b -> b.getAuthor() != null)
-                .allMatch(b -> b.getGenre() != null);
+                .allMatch(b -> b.getGenre() != null)
+                .allMatch(b -> b.getComments().size() > 0);
     }
 
     @Test

@@ -21,6 +21,7 @@ public class BookServiceImpl implements BookService {
     private final BookRepository repo;
 
     @Override
+    @Transactional(readOnly = true)
     public List<BookOutputDto> getAllBooks() {
         return repo.findAll().stream().map(BookOutputDto::fromDomain).collect(Collectors.toList());
     }
