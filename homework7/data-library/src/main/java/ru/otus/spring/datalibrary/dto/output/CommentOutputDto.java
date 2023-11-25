@@ -1,4 +1,4 @@
-package ru.otus.spring.datalibrary.dto;
+package ru.otus.spring.datalibrary.dto.output;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentDto {
+public class CommentOutputDto {
 
     private Long id;
 
@@ -15,5 +15,7 @@ public class CommentDto {
 
     private String text;
 
-    private BookDto book;
+    private String bookId;
+
+    private String bookTitle;
 }

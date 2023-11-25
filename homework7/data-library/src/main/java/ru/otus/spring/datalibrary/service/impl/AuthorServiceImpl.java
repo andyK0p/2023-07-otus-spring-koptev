@@ -2,13 +2,15 @@ package ru.otus.spring.datalibrary.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.otus.spring.datalibrary.data.entity.Author;
 import ru.otus.spring.datalibrary.data.repository.AuthorRepository;
+import ru.otus.spring.datalibrary.dto.AuthorDto;
 import ru.otus.spring.datalibrary.exception.NotFoundException;
+import ru.otus.spring.datalibrary.mappers.AuthorMapper;
 import ru.otus.spring.datalibrary.service.AuthorService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,30 +19,30 @@ public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository repo;
 
     @Override
-    public List<Author> getAllAuthors() {
-        return repo.findAll();
+    public List<AuthorDto> getAllAuthors() {
+        return repo.findAll().stream().map(AuthorMapper::toDto).collect(Collectors.toList());
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public Author getAuthorById(Long authorId) {
-        return repo.findById(authorId).orElseThrow(NotFoundException::new);
+    public AuthorDto getAuthorById(Long authorId) {
+        return repo.findById(authorId).map(AuthorMapper::toDto).orElseThrow(NotFoundException::new);
     }
 
     @Override
-    @Transactional
-    public void addAuthor(Author author) {
-        repo.save(author);
+    public AuthorDto addAuthor(AuthorDto authorDto) {
+        Author author = AuthorMapper.toDomainObject(authorDto);
+        Author added = repo.save(author);
+        return AuthorMapper.toDto(added);
     }
 
     @Override
-    @Transactional
-    public void updateAuthor(Author author) {
-        repo.save(author);
+    public AuthorDto updateAuthor(AuthorDto authorDto) {
+        Author author = AuthorMapper.toDomainObject(authorDto);
+        Author updated = repo.save(author);
+        return AuthorMapper.toDto(updated);
     }
 
     @Override
-    @Transactional
     public void deleteAuthorById(Long authorId) {
         repo.deleteById(authorId);
     }

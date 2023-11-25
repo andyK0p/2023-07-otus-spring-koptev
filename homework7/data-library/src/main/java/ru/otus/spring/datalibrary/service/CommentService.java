@@ -1,14 +1,18 @@
 package ru.otus.spring.datalibrary.service;
 
-import ru.otus.spring.datalibrary.data.entity.Comment;
+import ru.otus.spring.datalibrary.dto.CommentDto;
+
+import java.util.List;
 
 public interface CommentService {
 
-    Comment getById(Long commentId);
+    List<CommentDto> getCommentsByBookId(Long bookId);
 
-    void addComment(Comment comment);
+    CommentDto getCommentById(Long commentId);
 
-    void updateComment(Comment comment);
+    CommentDto addComment(CommentDto commentDto);
+
+    CommentDto updateComment(CommentDto commentDto);
 
     void deleteCommentById(Long commentId);
 }

@@ -50,7 +50,7 @@ public class Book {
     private Genre genre;
 
     @Fetch(FetchMode.SUBSELECT)
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "book", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "book", orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
     public Book(Long id, String title, Integer pageCount, Author author, Genre genre) {

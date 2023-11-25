@@ -1,19 +1,19 @@
 package ru.otus.spring.datalibrary.service;
 
 
-import ru.otus.spring.datalibrary.data.entity.Author;
+import ru.otus.spring.datalibrary.dto.AuthorDto;
 
 import java.util.List;
 
 public interface AuthorService {
 
-    List<Author> getAllAuthors();
+    List<AuthorDto> getAllAuthors();
 
-    Author getAuthorById(Long authorId);
+    AuthorDto getAuthorById(Long authorId);
 
-    void addAuthor(Author author);
+    AuthorDto addAuthor(AuthorDto authorDto);
 
-    void updateAuthor(Author author);
+    AuthorDto updateAuthor(AuthorDto authorDto);
 
     void deleteAuthorById(Long authorId);
 }

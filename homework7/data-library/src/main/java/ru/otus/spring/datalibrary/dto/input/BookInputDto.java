@@ -1,4 +1,4 @@
-package ru.otus.spring.datalibrary.dto;
+package ru.otus.spring.datalibrary.dto.input;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BookDto {
+public class BookInputDto {
 
     private Long id;
 
@@ -15,7 +15,7 @@ public class BookDto {
 
     private Integer pageCount;
 
-    private AuthorDto author;
+    private Long authorId;
 
-    private GenreDto genre;
+    private Long genreId;
 }

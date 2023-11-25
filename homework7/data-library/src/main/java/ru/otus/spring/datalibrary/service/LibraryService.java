@@ -1,38 +1,38 @@
 package ru.otus.spring.datalibrary.service;
 
 
-import ru.otus.spring.datalibrary.data.entity.Author;
-import ru.otus.spring.datalibrary.data.entity.Genre;
+import ru.otus.spring.datalibrary.dto.AuthorDto;
 import ru.otus.spring.datalibrary.dto.BookDto;
-import ru.otus.spring.datalibrary.dto.BookOutputDto;
-import ru.otus.spring.datalibrary.dto.CommentDto;
-import ru.otus.spring.datalibrary.dto.CommentOutputDto;
+import ru.otus.spring.datalibrary.dto.output.CommentOutputDto;
+import ru.otus.spring.datalibrary.dto.GenreDto;
+import ru.otus.spring.datalibrary.dto.input.BookInputDto;
+import ru.otus.spring.datalibrary.dto.input.CommentInputDto;
 
 import java.util.List;
 
 public interface LibraryService {
 
-    List<Author> listAllAuthors();
+    List<AuthorDto> listAllAuthors();
 
-    List<Genre> listAllGenres();
+    List<GenreDto> listAllGenres();
 
-    List<BookOutputDto> listAllBooks();
+    List<BookDto> listAllBooks();
 
-    BookOutputDto getBookById(Long bookId);
+    BookDto printSingleBookById(Long bookId);
 
-    void addBookToLibrary(BookDto bookDto);
+    void addBookToLibrary(BookInputDto bookDto);
 
-    void updateBook(BookDto bookDto);
+    void updateBook(BookInputDto bookDto);
 
     void deleteBook(Long bookId);
 
     List<CommentOutputDto> listAllCommentsForBook(Long bookId);
 
-    CommentOutputDto getCommentById(Long commentId);
+    CommentOutputDto printCommentById(Long commentId);
 
-    void addCommentToBook(CommentDto commentDto);
+    void addCommentToBook(CommentInputDto commentDto);
 
-    void updateComment(CommentDto commentDto);
+    void updateComment(CommentInputDto commentDto);
 
-    void deleteComment(CommentDto commentDto);
+    void deleteComment(Long commentId);
 }

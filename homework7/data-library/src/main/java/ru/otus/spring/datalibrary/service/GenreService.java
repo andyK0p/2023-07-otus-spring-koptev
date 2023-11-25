@@ -1,19 +1,19 @@
 package ru.otus.spring.datalibrary.service;
 
 
-import ru.otus.spring.datalibrary.data.entity.Genre;
+import ru.otus.spring.datalibrary.dto.GenreDto;
 
 import java.util.List;
 
 public interface GenreService {
 
-    List<Genre> getAllGenres();
+    List<GenreDto> getAllGenres();
 
-    Genre getGenreById(Long genreId);
+    GenreDto getGenreById(Long genreId);
 
-    void addGenre(Genre genre);
+    GenreDto addGenre(GenreDto genreDto);
 
-    void updateGenre(Genre genre);
+    GenreDto updateGenre(GenreDto genreDto);
 
     void deleteGenreById(Long genreId);
 }

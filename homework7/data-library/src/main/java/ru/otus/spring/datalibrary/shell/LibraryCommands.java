@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellOption;
-import ru.otus.spring.datalibrary.dto.BookDto;
-import ru.otus.spring.datalibrary.dto.CommentDto;
+import ru.otus.spring.datalibrary.dto.input.BookInputDto;
+import ru.otus.spring.datalibrary.dto.input.CommentInputDto;
 import ru.otus.spring.datalibrary.service.LibraryService;
 
 
@@ -42,7 +42,7 @@ public class LibraryCommands {
                          @ShellOption String authorId,
                          @ShellOption String pageCount,
                          @ShellOption String genreId) {
-        BookDto dto = new BookDto();
+        BookInputDto dto = new BookInputDto();
         dto.setTitle(title);
         dto.setAuthorId(Long.parseLong(authorId));
         dto.setPageCount(Integer.parseInt(pageCount));
@@ -54,7 +54,7 @@ public class LibraryCommands {
     //example: rb 1
     @ShellMethod(value = "Read book by id", key = {"rb", "read-book"})
     public void readBook(@ShellOption(defaultValue = "1") String bookId) {
-        System.out.println(libraryService.getBookById(Long.parseLong(bookId)));
+        System.out.println(libraryService.printSingleBookById(Long.parseLong(bookId)));
     }
 
     //example: ub 1 "Java Concurrency in Practice" 1 342 1
@@ -64,7 +64,7 @@ public class LibraryCommands {
                              @ShellOption String authorId,
                              @ShellOption String pageCount,
                              @ShellOption String genreId) {
-        BookDto dto = new BookDto();
+        BookInputDto dto = new BookInputDto();
         dto.setId(Long.parseLong(bookId));
         dto.setTitle(title);
         dto.setAuthorId(Long.parseLong(authorId));
@@ -86,7 +86,7 @@ public class LibraryCommands {
     public String createComment(@ShellOption String name,
                                 @ShellOption String text,
                                 @ShellOption String bookId) {
-        CommentDto dto = new CommentDto();
+        CommentInputDto dto = new CommentInputDto();
         dto.setName(name);
         dto.setText(text);
         dto.setBookId(Long.parseLong(bookId));
@@ -100,7 +100,7 @@ public class LibraryCommands {
                                 @ShellOption String name,
                                 @ShellOption String text,
                                 @ShellOption String bookId) {
-        CommentDto dto = new CommentDto();
+        CommentInputDto dto = new CommentInputDto();
         dto.setId(Long.parseLong(commentId));
         dto.setName(name);
         dto.setText(text);
@@ -112,17 +112,13 @@ public class LibraryCommands {
     //example: rc 1
     @ShellMethod(value = "Read comment by id", key = {"rc", "read-comment"})
     public void readComment(@ShellOption(defaultValue = "1") String commentId) {
-        System.out.println(libraryService.getCommentById(Long.parseLong(commentId)));
+        System.out.println(libraryService.printCommentById(Long.parseLong(commentId)));
     }
 
-    //example: dc 1 3
+    //example: dc 1
     @ShellMethod(value = "Delete comment by id", key = {"dc", "delete-comment"})
-    public String deleteComment(@ShellOption String commentId,
-                                @ShellOption String bookId) {
-        CommentDto dto = new CommentDto();
-        dto.setId(Long.parseLong(commentId));
-        dto.setBookId(Long.parseLong(bookId));
-        libraryService.deleteComment(dto);
+    public String deleteComment(@ShellOption String commentId) {
+        libraryService.deleteComment(Long.parseLong(commentId));
         return "The comment with id=" + commentId + " has been deleted.";
     }
 }
