@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Add new comment</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Comment edition -->
+<form id="add-form" action="newComment.html" th:action="@{/comments/add}" th:method="post" th:object="${newComment}">
+    <h3>Add new comment to book:</h3>
+    <h2 th:text="${book.title}" />
+
+    <div class="row">
+        <label for="book-id-input">Book ID:</label>
+        <input id="book-id-input" type="text" readonly="readonly" name="bookId" th:value="${book.id}" value="1"/>
+    </div>
+
+    <div class="row">
+        <label for="name-input">Posted by:</label>
+        <input id="name-input" name="name" type="text" th:value="*{name}" value="Name"/>
+    </div>
+
+    <div class="row">
+        <label for="text-input">Text:</label>
+        <textarea id="text-input" name="text" th:value="*{text}"
+                  cols="40" rows="10" maxlength="800">Type your comment here...</textarea>
+    </div>
+
+    <div class="row">
+        <button type="submit">Add</button>
+        <a href="listComments.html" th:href="@{/comments/book/__${book.id}__}"><button type="button">Cancel</button></a>
+    </div>
+</form>
+
+</body>
+</html>
