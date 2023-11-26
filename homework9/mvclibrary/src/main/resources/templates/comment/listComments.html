@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Comments for book</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .comments {
+            border: 1px solid steelblue;
+            width: 600px;
+            border-collapse: collapse;
+        }
+
+        .comments tr td, th {
+            padding: 5px;
+            border: 1px solid steelblue;
+        }
+
+        .comments td:last-child, td:first-child {
+            width: 50px;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<h3>Comments for book:</h3>
+<h2 th:text="${book.title}" />
+
+<table class="comments">
+    <thead>
+    <tr>
+        <th>Posted By</th>
+        <th>Text</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="comment : ${comments}">
+        <td th:text="${comment.name}">Posted by name</td>
+        <td th:text="${comment.text}">Text</td>
+        <td>
+            <a th:href="@{/comments/__${comment.id}__}" href="editComment.html">Edit</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a th:href="@{/comments/book/__${book.id}__/new}" href="newComment.html"><button type="button">Add New Comment</button></a>
+<p>&nbsp;&nbsp;&nbsp;</p>
+<a th:href="@{/books}" href="../book/listBooks.html"><button type="button">Back to books</button></a>
+</body>
+</html>

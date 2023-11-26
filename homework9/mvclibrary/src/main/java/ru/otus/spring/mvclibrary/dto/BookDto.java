@@ -1,0 +1,21 @@
+package ru.otus.spring.mvclibrary.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class BookDto {
+
+    private Long id;
+
+    private String title;
+
+    private Integer pageCount;
+
+    private AuthorDto author;
+
+    private GenreDto genre;
+}
