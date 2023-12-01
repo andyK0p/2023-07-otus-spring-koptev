@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit book</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Book edition -->
+<form id="edit-form">
+    <h3>Edit book:</h3>
+
+    <div class="row">
+        <label for="id-input">ID:</label>
+        <input id="id-input" type="text" readonly="readonly" name="id" value="1"/>
+    </div>
+
+    <div class="row">
+        <label for="title-input">Title:</label>
+        <input id="title-input" name="title" type="text" value="Book title"/>
+    </div>
+
+    <div class="row">
+        <label for="pcount-input">Page count:</label>
+        <input id="pcount-input" name="pageCount" type="number" value="1"/>
+    </div>
+
+    <div class="row">
+        <label for="authorDropDown">Author:</label>
+        <select name="author" id="authorDropDown"></select>
+    </div>
+
+    <div class="row">
+        <label for="genresDropDown">Genre:</label>
+        <select name="genre" id="genresDropDown"></select>
+    </div>
+
+    <div class="row">
+        <button type="submit">Save</button>
+        <a href="/books"><button type="button">Cancel</button></a>
+    </div>
+</form>
+<form id="delete-form">
+    <div class="row">
+        <button type="submit">Delete</button>
+    </div>
+</form>
+<script>
+    (async () => {
+        const requests = {
+            get: (path) => fetch(`/api/${path}`).then(data => data.json()),
+            delete: (path, id) => fetch(`/api/${path}/${id}`, {
+                method: 'DELETE',
+            }),
+            put: (path, data) => fetch(
+                `/api/${path}`,
+                {
+                    method: 'PUT',
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                })
+        }
+
+            const generateSelectOption = (value, label, selected) => {
+                const element = document.createElement('option');
+                element.value = value;
+                element.textContent = label;
+                element.selected = selected ?? false;
+                return element;
+            }
+
+        try {
+            const pathParts = location.pathname.split('/').filter(Boolean);
+            const bookId = pathParts.at(-1);
+            const book = await requests.get(`books/${bookId}`);
+            const authors = await requests.get('authors');
+            const genres = await requests.get('genres');
+
+            const authorsSelectOptions = authors.map(({id, fullName}) => {
+                return generateSelectOption(id, fullName, id === book.author.id);
+            })
+
+            const genresSelectOptions = genres.map(({id, name}) => {
+                return generateSelectOption(id, name, id === book.genre.id);
+            })
+
+            const idInput = document.getElementById('id-input');
+            const authorSelect = document.getElementById('authorDropDown');
+            const genresSelect = document.getElementById('genresDropDown');
+            const formElement = document.getElementById('edit-form');
+            const titleInput = document.getElementById('title-input');
+            const pageCountInput = document.getElementById('pcount-input');
+            const deleteForm = document.getElementById('delete-form');
+
+            if (authorSelect) {
+                authorsSelectOptions.forEach(authorOption => authorSelect.append(authorOption));
+            }
+
+            if (genresSelect) {
+                genresSelectOptions.forEach(option => genresSelect.append(option));
+            }
+
+            if (idInput) {
+                idInput.value = book.id;
+            }
+
+            if (titleInput) {
+                titleInput.value = book.title;
+            }
+
+            if (pageCountInput) {
+                pageCountInput.value = book.pageCount;
+            }
+
+            if (formElement && titleInput && pageCountInput) {
+                formElement.onsubmit = async (event) => {
+                    try {
+                        event.preventDefault();
+                        const data = {
+                            id: bookId,
+                            title: titleInput.value,
+                            pageCount: pageCountInput.value,
+                            authorId: authorSelect.value,
+                            genreId: genresSelect.value,
+                        }
+                        await requests.put('books', data);
+
+                        window.location.href = '/books';
+                    }
+                    catch (error) {
+                        console.log(error);
+                    }
+                }
+            }
+
+            if (deleteForm) {
+                deleteForm.onsubmit = async (event) => {
+                    try {
+                        event.preventDefault();
+                        await requests.delete('books', bookId);
+                        window.location.href = '/books';
+                    }
+                    catch (error) {
+                        console.log(error);
+                    }
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    })()
+</script>
+</body>
+</html>
